@@ -46,9 +46,9 @@ with maincol1:
 
     match rec_optio:
         case "Filter":
-            category_tab, title_tab = st.tabs(["Filter by Category","Filter by Title"])
+            category_tab, title_tab = st.tabs(["Filter by Level","Filter by Title"])
             with category_tab:
-                slbCategory = st.selectbox("Category",  get_categories())
+                slbCategory = st.selectbox("Level",  get_categories())
 
                 col1, col2 = st.columns(2)
                 with col1:
@@ -88,10 +88,11 @@ with maincol1:
                                                     sort_order=sort_order, 
                                                     sort_by_mem=sort_by)
                     filterer.keyword_search(item_title=inputTitle)
-                    rec_filter = filterer.rec_rs
                     try:
+                        rec_filter = filterer.rec_rs
                         print_rec(top_k=len(rec_filter),df=rec_filter)
-                    except: st.write("Can't find any recommendations for you")
+                    except AttributeError:
+                        st.write("Can't find any recommendations for you")                        
 
         case "RecSys Model":
             st.warning("Sr sr (￣ε(#￣) Model still in testing...")
