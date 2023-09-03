@@ -7,16 +7,26 @@ Project Structure
 │   main.py
 │   README.md
 │   requirements.txt
-│
+│   
+├───Android
 ├───Assets
-│       animes_embeddings.pkl
-│
+│       courses_embeddings.pkl
+│       
 ├───Data
-│       anime.csv
-│       anime_adj.csv
-│       DataPreprocessing.ipynb
-│       rating.csv
-│       rating_adj.csv
+│   │   courses.csv
+│   │   DataPreprocessing.ipynb
+│   │   ratings.csv
+│   │
+│   ├───coursera
+│   │       Coursera.csv
+│   │       Coursera_courses.csv
+│   │       Coursera_reviews.csv
+│   │
+│   └───udemy
+│           udemy_courses.csv
+│           udemy_courses.json
+│           udemy_reviews.csv
+│           udemy_reviews.json
 │
 ├───Model
 │   │   ultils.py
@@ -24,13 +34,20 @@ Project Structure
 │   ├───Hybrid
 │   │   │   Rec_Filtering.py
 │   │   │   Rec_Hybrid.py
+│   │   │
+│   │   └───__pycache__
+│   │           Rec_Filtering.cpython-311.pyc
 │   │
 │   ├───Prompt
 │   │   │   prompt.py
 │   │   │
+│   │   └───__pycache__
+│   │           prompt.cpython-311.pyc
+│   │
+│   └───__pycache__
+│           ultils.cpython-311.pyc
 │
 └───Test
-        Prompt.ipynb
         Rec_Filtering.ipynb
         Rec_Hybrid.ipynb
 ```
