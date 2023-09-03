@@ -17,13 +17,13 @@ class RecommenderPrompt:
         self.rec_rs = None
 
     def userInput(self):
-        self.vectors = joblib.load('Assets/animes_embeddings.pkl')
+        # self.vectors = joblib.load('Assets/courses_embeddings.pkl')
         user_input = self.input_prompt
         input_embeddings = self.model.encode(user_input)
         similarity = cosine_similarity(input_embeddings.reshape(1,input_embeddings.shape[0]),self.vectors)
         return similarity
 
-    def recAnime(self):
+    def recCourses(self):
         similarity_score = self.userInput()
         # sorting by similarity score
         if self.rec_rs is not np.nan:
@@ -35,7 +35,7 @@ class RecommenderPrompt:
             try:
                 rec_title = self.df.iloc[i[0]]["item_name"]
                 rec_avg_rating = self.df.iloc[i[0]]["item_avg_rating"]
-                rec_genre = self.df.iloc[i[0]]["item_genre"]
+                rec_genre = self.df.iloc[i[0]]["item_category"]
 
                 # divide the page into 2 columns
                 col1, col2 = st.columns(2)

@@ -8,7 +8,7 @@ from Model.Hybrid.Rec_Filtering import RecommenderFiltering
 from Model.ultils import *
 from Model.Prompt.prompt import RecommenderPrompt
 
-df_anime = pd.read_csv('Data/anime_adj.csv')
+df_courses = pd.read_csv('Data/courses.csv')
 top_k = 10
 script_about = '''
 This web app is a demo of the Recommender system Scientific research project
@@ -27,7 +27,7 @@ st.set_page_config(
 with st.sidebar:
     about_tab = st.tabs(["About"])
     st.markdown('''
-                    # :red[Anime Recommender System]
+                    # :red[E-learning Recommender System]
                     *When Hybrid meets the Prompt*''')
     st.markdown(script_about)
     appreciation_tab = st.tabs(["Appreciation"])
@@ -54,7 +54,8 @@ with maincol1:
                 with col1:
                     slbSortOrder = st.radio("Sort Order", ["Descending","Ascending"])
                 with col2:
-                    slbSortByMem = st.radio("Sort By", ["Rating","Popular"])
+                    #? fixed sorted by popular!!!
+                    slbSortByMem = st.radio("Sort By", ["Rating"])
                 btnType = st.button("Recommend by Category")
                 
                 sort_order = False if slbSortOrder == "Descending" else True
@@ -63,12 +64,12 @@ with maincol1:
 
                 if btnType:
                     st.balloons()
-                    filterer = RecommenderFiltering(df=df_anime,
+                    filterer = RecommenderFiltering(df=df_courses,
                                                     top_k=top_k, 
                                                     sort_order=sort_order, 
                                                     sort_by_mem=sort_by)
                     if slbCategory == "All":
-                        rec_filter = filterer._sort_values(df_anime)
+                        rec_filter = filterer._sort_values(df_courses)
                     else:
                         filterer.keyword_search(item_categories=slbCategory)
                         rec_filter = filterer.rec_rs
@@ -82,7 +83,7 @@ with maincol1:
 
                 if btnTitle:
                     st.balloons()
-                    filterer = RecommenderFiltering(df=df_anime,
+                    filterer = RecommenderFiltering(df=df_courses,
                                                     top_k=top_k, 
                                                     sort_order=sort_order, 
                                                     sort_by_mem=sort_by)
@@ -107,20 +108,20 @@ with maincol1:
                 if input_prompt == "":
                     st.warning("Please describe your desired recommendations")
                 else:
-                    vectors = joblib.load('Assets/animes_embeddings.pkl')
-                    prompt = RecommenderPrompt(df=df_anime,
+                    vectors = joblib.load('Assets/courses_embeddings.pkl')
+                    prompt = RecommenderPrompt(df=df_courses,
                                             top_k=top_k,
                                             vectors=vectors, 
                                             input_prompt=input_prompt)
                     with st.chat_message("assistant"):
                         st.write("Here is my recommendations for you")
-                        prompt.recAnime()
+                        prompt.recCourses()
 
 with maincol2:
-    with st.container():
-        st.caption('Most popular')
-        print_rec(top_k=5,df=df_anime.sort_values("item_members",ascending=False))
-    st.divider()
+    # with st.container():
+    #     st.caption('Most popular')
+    #     print_rec(top_k=5,df=df_courses.sort_values("item_members",ascending=False))
+    # st.divider()
     with st.container():
         st.caption("Most rated")
-        print_rec(top_k=5,df=df_anime.sort_values("item_avg_rating", ascending=False))
+        print_rec(top_k=5,df=df_courses.sort_values("item_avg_rating", ascending=False))

@@ -15,11 +15,10 @@ class RecommenderFiltering:
     def _filter_categories(self):
         idx = []
         for i in self.rec.index: #search through index
-            if self.rec.loc[i,"item_genre"] is not np.nan:
-                keyword_search = self.rec.loc[i, "item_genre"].split(',')
+            if self.rec.loc[i,"item_category"] is not np.nan:
+                keyword_search = self.rec.loc[i, "item_category"].split(',')
                 if self.item_categories.lower().strip() in str(keyword_search).lower().strip():
                     idx.append(i)
-                
         self.rec = self.rec.loc[idx]
             
     # internal fucntion
@@ -35,15 +34,16 @@ class RecommenderFiltering:
         self.rec = self.rec.loc[idx]
     
     def _sort_values(self, df):
-        if self.sort_by_mem == True:
-            df_sorted = df[df["item_avg_rating"]>=9].sort_values("item_members", ascending=self.sort_order)
-        else:
-            df_sorted = df.sort_values("item_avg_rating", ascending=self.sort_order)
+        df_sorted = df.sort_values("item_avg_rating", ascending=self.sort_order)
+    #     if self.sort_by_mem == True:
+    #         df_sorted = df.sort_values("item_members", ascending=self.sort_order)
+    #     else:
+    #         df_sorted = df.sort_values("item_avg_rating", ascending=self.sort_order)
         return df_sorted
         
     def return_recommend(self):
         if len(self.rec) == 0:
-            return None
+            return 
         elif len(self.rec) > self.top_k:
             self.rec_rs = self.rec.iloc[:self.top_k].copy()
         else:
@@ -62,7 +62,7 @@ class RecommenderFiltering:
                 print(f"No matching products found for {self.item_categories}")
                 return None
 
-        # filter by item_genre
+        # filter by item_category
         if self.item_title != None:
             self._filter_title()
             if len(self.rec) == 0:
